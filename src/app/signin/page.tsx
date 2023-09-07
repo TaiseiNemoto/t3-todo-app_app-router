@@ -1,21 +1,11 @@
+import { getProviders } from 'next-auth/react';
 import Image from 'next/image';
-// import ButtonAuth from '../_components/ButtonAuth';
-async function getData() {
-  const res = await fetch('http://localhost:3000/api/auth/providers');
-  console.log(res);
 
-  // The return value is *not* serialized
-  // You can return Date, Map, Set, etc.
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error('Failed to fetch data');
-  }
-  return res.json();
-}
+import ButtonAuth from '../_components/ButtonAuth';
 
 export default async function Page() {
-  const data = await getData();
-  console.log(data);
+  const providers = await getProviders();
+  console.log(providers);
 
   return (
     <>
@@ -30,21 +20,10 @@ export default async function Page() {
           <div className="text-center">
             <div className="mx-auto max-w-3xl">
               <div className="flexjustify-center"></div>
-              {/* {Object.values(data).map((provider) => (
-                <ButtonAuth provider={provider} key={provider.name} />
-                <button
-                  className="inline-flex w-full cursor-pointer items-center justify-center rounded-md p-4 text-xl font-bold hover:text-green-five"
-                  // このボタンを押すと GitHub による認証が行われます
-                  // また、認証後のリダイレクト先をルートパスに設定しています
-                  onClick={() =>
-                    void signIn(provider.id, {
-                      callbackUrl: '/',
-                    })
-                  }
-                >
-                  Sign in with {provider.name}
-                </button>
-              ))} */}
+              {providers &&
+                Object.values(providers).map((provider) => (
+                  <ButtonAuth {...provider} key={provider.name} />
+                ))}
             </div>
           </div>
         </div>
