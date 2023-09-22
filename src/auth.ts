@@ -7,7 +7,7 @@ import {
 import GithubProvider from 'next-auth/providers/github';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 
-import prisma from './db';
+import { prisma } from './db';
 
 declare module 'next-auth' {
   interface Session extends DefaultSession {

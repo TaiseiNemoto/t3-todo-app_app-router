@@ -2,10 +2,35 @@
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useSession } from 'next-auth/react';
 import { createInput } from '../../types';
 
 export function CreateTodo() {
   const [newTodo, setNewTodo] = useState('');
+  const { data } = useSession();
+
+  const createTodo = async () => {
+    console.log(data?.user.id);
+    const userId = data?.user.id;
+
+    const res = await fetch(`/api/todo`, {
+      method: 'POST',
+      body: JSON.stringify({ newTodo, userId }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (res.ok) {
+      // const id = z.number().parse(await res.json());
+      alert('Note created');
+      // 詳細ページが実装されたら、詳細ページに遷移するようにする
+      // router.push(`/notes`);
+      // 3. 現在のページのデータをサーバーから再取得する
+      // router.refresh();
+    } else {
+      alert('Note failed to create');
+    }
+  };
 
   return (
     <form
@@ -17,6 +42,8 @@ export function CreateTodo() {
           toast.error(result.error.format()._errors.join('\n'));
           return;
         }
+
+        createTodo();
       }}
       className="flex justify-between gap-3"
     >
