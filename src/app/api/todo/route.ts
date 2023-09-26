@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
-  console.log(data);
 
   const todo = await prisma.todo.create({
     data: {
@@ -16,9 +15,8 @@ export async function POST(req: NextRequest) {
       },
     },
   });
+
+  // parceを調べる
   // const parcedData = zUpsertNote.parse(data);
-  // const note = await prisma.note.create({
-  //   data: { title: parcedData.title, body: parcedData.body },
-  // });
-  return new NextResponse(`${todo}`, { status: 201 });
+  return new NextResponse(`${todo.id}`, { status: 201 });
 }
