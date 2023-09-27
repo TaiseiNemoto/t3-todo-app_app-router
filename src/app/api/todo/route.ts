@@ -1,22 +1,22 @@
 import { prisma } from '@/db';
 
 import { NextRequest, NextResponse } from 'next/server';
+import { createInput } from './type';
 
 export async function POST(req: NextRequest) {
   const data = await req.json();
+  const parcedData = createInput.parse(data);
 
   const todo = await prisma.todo.create({
     data: {
-      text: data.newTodo,
+      text: parcedData.newTodo,
       user: {
         connect: {
-          id: data.userId,
+          id: parcedData.userId,
         },
       },
     },
   });
 
-  // parceを調べる
-  // const parcedData = zUpsertNote.parse(data);
   return new NextResponse(`${todo.id}`, { status: 201 });
 }

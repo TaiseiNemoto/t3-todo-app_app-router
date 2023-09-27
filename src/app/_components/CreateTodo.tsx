@@ -21,12 +21,6 @@ export function CreateTodo() {
       },
     });
     if (res.ok) {
-      // const id = z.number().parse(await res.json());
-      alert('Note created');
-      // 詳細ページが実装されたら、詳細ページに遷移するようにする
-      // router.push(`/notes`);
-      // 3. 現在のページのデータをサーバーから再取得する
-      // router.refresh();
     } else {
       alert('Note failed to create');
     }
