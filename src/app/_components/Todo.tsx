@@ -7,6 +7,20 @@ type TodoProps = {
 export function Todo({ todo }: TodoProps) {
   const { id, isCompleted } = todo;
 
+  const toggleTodoStatus = async () => {
+    // const res = await fetch(`/api/todo`, {
+    //   method: 'PUT',
+    //   body: JSON.stringify({ id, is_completed }),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+    // if (res.ok) {
+    // } else {
+    //   alert('Note failed to create');
+    // }
+  };
+
   return (
     <div className="flex items-center justify-between rounded-md border-2 border-gray-one px-5 py-4">
       <div className="flex w-full max-w-lg items-center justify-start">
@@ -16,6 +30,9 @@ export function Todo({ todo }: TodoProps) {
           name="done"
           id={id}
           checked={isCompleted}
+          onChange={() => {
+            toggleTodoStatus();
+          }}
         />
         <input
           className="ml-5 flex-1 text-ellipsis rounded-none border-x-0 border-t-0 border-b border-dashed border-b-gray-two bg-cream-four px-0 pb-1 text-base font-normal text-gray-three placeholder:text-gray-two focus:border-gray-three focus:outline-none focus:ring-0"
