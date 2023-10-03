@@ -6,6 +6,12 @@ const zTodo = z.object({
   isCompleted: z.boolean(),
 });
 
+const zTodoParams = z.object({
+  id: z.string(),
+  text: z.string(),
+  isCompleted: z.string(),
+});
+
 export const createInput = z.object({
   newTodo: z
     .string()
@@ -29,3 +35,4 @@ export const toggleInput = z.object({
 });
 
 export type Todo = z.infer<typeof zTodo>;
+export type TodoParams = z.infer<typeof zTodoParams>;

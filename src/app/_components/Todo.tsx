@@ -1,24 +1,43 @@
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+
 import type { Todo } from '../api/todo/type';
+import type { TodoParams } from '../api/todo/type';
 
 type TodoProps = {
   todo: Todo;
 };
 
 export function Todo({ todo }: TodoProps) {
-  const { id, isCompleted } = todo;
+  const { id, text, isCompleted } = todo;
 
-  const toggleTodoStatus = async () => {
-    // const res = await fetch(`/api/todo`, {
-    //   method: 'PUT',
-    //   body: JSON.stringify({ id, is_completed }),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
-    // if (res.ok) {
-    // } else {
-    //   alert('Note failed to create');
-    // }
+  const [currentTodo, setCurrentTodo] = useState(text);
+
+  const toggleTodoStatus = async (checked: string) => {
+    const res = await putTodo({ id, isCompleted: checked, text });
+    if (res.ok) {
+    } else {
+      toast.error('Todo failed to Update');
+    }
+  };
+
+  const updateTodo = async () => {
+    const res = await putTodo({ id, text: currentTodo, isCompleted });
+    if (res.ok) {
+    } else {
+      toast.error('Todo failed to Update');
+    }
+  };
+
+  const putTodo = async (params: TodoParams | Todo) => {
+    const res = await fetch(`/api/todo`, {
+      method: 'PUT',
+      body: JSON.stringify(params),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return res;
   };
 
   return (
@@ -30,8 +49,8 @@ export function Todo({ todo }: TodoProps) {
           name="done"
           id={id}
           checked={isCompleted}
-          onChange={() => {
-            toggleTodoStatus();
+          onChange={(e) => {
+            toggleTodoStatus(e.target.value);
           }}
         />
         <input
@@ -39,6 +58,13 @@ export function Todo({ todo }: TodoProps) {
           id={`${todo.id}-text`}
           type="text"
           placeholder="Enter a todo"
+          value={currentTodo}
+          onChange={(e) => {
+            setCurrentTodo(e.target.value);
+          }}
+          onBlur={() => {
+            updateTodo();
+          }}
         />
         <span
           className={`${
