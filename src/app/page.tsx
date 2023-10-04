@@ -4,6 +4,11 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { CreateTodo } from './_components/CreateTodo';
+import ErrorBoundary from './_components/ErrorBoundary';
+import { Suspense } from 'react';
+import Loading from './_components/Loading';
+import FetchError from './_components/FetchError';
+import { Todos } from './_components/Todos';
 
 export default function Home() {
   const { data: sessionData, status } = useSession();
@@ -36,6 +41,11 @@ export default function Home() {
               </div>
               <div>
                 <CreateTodo />
+                <ErrorBoundary fallback={<FetchError />}>
+                  <Suspense fallback={<Loading />}>
+                    <Todos />
+                  </Suspense>
+                </ErrorBoundary>
               </div>
             </>
           )}
