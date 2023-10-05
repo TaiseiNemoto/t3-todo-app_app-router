@@ -12,6 +12,7 @@ import { Todos } from './_components/Todos';
 
 export default function Home() {
   const { data: sessionData, status } = useSession();
+
   return (
     <>
       <Head>

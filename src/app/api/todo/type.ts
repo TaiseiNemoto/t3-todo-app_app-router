@@ -6,6 +6,8 @@ const zTodo = z.object({
   isCompleted: z.boolean(),
 });
 
+export const zTodos = z.array(zTodo);
+
 const zTodoParams = z.object({
   id: z.string(),
   text: z.string(),
