@@ -1,17 +1,20 @@
-'use client';
-
 import Head from 'next/head';
 import Image from 'next/image';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { getServerSession } from 'next-auth';
+import { Suspense } from 'react';
+
 import { CreateTodo } from './_components/CreateTodo';
 import ErrorBoundary from './_components/ErrorBoundary';
-import { Suspense } from 'react';
 import Loading from './_components/Loading';
 import FetchError from './_components/FetchError';
 import { Todos } from './_components/Todos';
+import ButtonLogout from './_components/ButtonLogout';
+import ButtonLogin from './_components/ButtonLogin';
+import { authOptions } from '@/auth';
 
-export default function Home() {
-  const { data: sessionData, status } = useSession();
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+  console.log(session);
 
   return (
     <>
@@ -25,20 +28,13 @@ export default function Home() {
           <h1 className="mb-6 text-center text-4xl font-bold text-gray-three">
             ToDo List
           </h1>
-          {status !== 'loading' && sessionData && (
-            // status が "loading" でない、つまり認証情報の取得が完了している、
-            // かつ、認証されている場合に、下記が表示されます
+          {session ? (
             <>
               <div className="flex flex-col items-center">
                 <p className="text-l text-white mb-4 text-center">
-                  <span>Logged in as {sessionData.user?.email}</span>
+                  <span>Logged in as {session.user?.email}</span>
                 </p>
-                <button
-                  className="mb-8 inline-flex cursor-pointer items-center justify-center rounded-md py-2 px-4 font-semibold outline outline-2 outline-offset-2 outline-green-one hover:text-green-five"
-                  onClick={() => void signOut()}
-                >
-                  Sign out
-                </button>
+                <ButtonLogout />
               </div>
               <div>
                 <CreateTodo />
@@ -49,17 +45,9 @@ export default function Home() {
                 </ErrorBoundary>
               </div>
             </>
-          )}
-          {status !== 'loading' && !sessionData && (
-            // status が "loading" でない、つまり認証情報の取得が完了している、
-            // かつ、認証されていない場合に、下記が表示されます
+          ) : (
             <div className="flex flex-col items-center">
-              <button
-                className="mb-5 inline-flex cursor-pointer items-center justify-center rounded-md py-2 px-4 font-semibold outline outline-2 outline-offset-2 outline-green-one hover:text-green-five"
-                onClick={() => void signIn()}
-              >
-                Sign In
-              </button>
+              <ButtonLogin />
               <div className="mb-5 text-xl">
                 <p className="text-center text-gray-four">
                   Keep your life in order with todolist
