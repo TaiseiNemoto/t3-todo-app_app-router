@@ -2,25 +2,21 @@
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { useSession } from 'next-auth/react';
 import { createInput } from '../../types';
 
 export function CreateTodo() {
   const [newTodo, setNewTodo] = useState('');
-  const { data } = useSession();
 
   const createTodo = async () => {
-    console.log(data?.user.id);
-    const userId = data?.user.id;
-
     const res = await fetch(`/api/todo`, {
       method: 'POST',
-      body: JSON.stringify({ newTodo, userId }),
+      body: JSON.stringify({ newTodo }),
       headers: {
         'Content-Type': 'application/json',
       },
     });
     if (res.ok) {
+      setNewTodo('');
     } else {
       alert('Note failed to create');
     }

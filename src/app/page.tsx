@@ -7,14 +7,16 @@ import { CreateTodo } from './_components/CreateTodo';
 import ErrorBoundary from './_components/ErrorBoundary';
 import Loading from './_components/Loading';
 import FetchError from './_components/FetchError';
-import { Todos } from './_components/Todos';
+import Todos from './_components/Todos';
 import ButtonLogout from './_components/ButtonLogout';
 import ButtonLogin from './_components/ButtonLogin';
 import { authOptions } from '@/auth';
+import { apiUrl } from '../../constants/api';
+import { zTodos } from './api/todo/type';
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
-  console.log(session);
+  const todos = await getTodos();
 
   return (
     <>
@@ -40,7 +42,7 @@ export default async function Home() {
                 <CreateTodo />
                 <ErrorBoundary fallback={<FetchError />}>
                   <Suspense fallback={<Loading />}>
-                    <Todos />
+                    <Todos initialState={todos} />
                   </Suspense>
                 </ErrorBoundary>
               </div>
@@ -71,3 +73,10 @@ export default async function Home() {
     </>
   );
 }
+
+export const getTodos = async () => {
+  const res = await fetch(`${apiUrl}/todos`, { cache: 'no-store' });
+  const data = await res.json();
+  const todos = zTodos.parse(data);
+  return todos;
+};

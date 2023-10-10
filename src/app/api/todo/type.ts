@@ -19,7 +19,6 @@ export const createInput = z.object({
     .string()
     .min(1, 'todo must be at least 1 letter')
     .max(50, 'todo must be 50 letters or less'),
-  userId: z.string(),
 });
 
 export const updateInput = z.object({
@@ -28,7 +27,7 @@ export const updateInput = z.object({
     .string()
     .min(1, 'todo must be at least 1 letter')
     .max(50, 'todo must be 50 letters or less'),
-  is_completed: z.boolean(),
+  isCompleted: z.boolean(),
 });
 
 export const toggleInput = z.object({

@@ -8,12 +8,14 @@ type TodoProps = {
   todo: Todo;
 };
 
-export function Todo({ todo }: TodoProps) {
+export default function Todo({ todo }: TodoProps) {
   const { id, text, isCompleted } = todo;
 
   const [currentTodo, setCurrentTodo] = useState(text);
 
-  const toggleTodoStatus = async (checked: string) => {
+  const toggleTodoStatus = async (checked: boolean) => {
+    console.log(checked);
+
     const res = await putTodo({ id, isCompleted: checked, text });
     if (res.ok) {
     } else {
@@ -40,6 +42,20 @@ export function Todo({ todo }: TodoProps) {
     return res;
   };
 
+  const deleteTodo = async () => {
+    const res = await fetch(`/api/todo/${todo.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (res.ok) {
+      alert('Note deleted');
+    } else {
+      alert('Note failed to delete');
+    }
+  };
+
   return (
     <div className="flex items-center justify-between rounded-md border-2 border-gray-one px-5 py-4">
       <div className="flex w-full max-w-lg items-center justify-start">
@@ -50,7 +66,7 @@ export function Todo({ todo }: TodoProps) {
           id={id}
           checked={isCompleted}
           onChange={(e) => {
-            toggleTodoStatus(e.target.value);
+            toggleTodoStatus(e.target.checked);
           }}
         />
         <input
@@ -77,6 +93,7 @@ export function Todo({ todo }: TodoProps) {
       <button
         type="button"
         className="group ml-4 flex items-center justify-center rounded-md bg-cream-four p-2 hover:bg-steel-one focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-five"
+        onClick={deleteTodo}
       >
         <svg
           className="h-5 w-5 text-steel-three group-hover:text-gray-five"
