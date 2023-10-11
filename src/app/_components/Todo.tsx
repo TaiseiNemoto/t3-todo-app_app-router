@@ -50,9 +50,7 @@ export default function Todo({ todo }: TodoProps) {
       },
     });
     if (res.ok) {
-      alert('Note deleted');
     } else {
-      alert('Note failed to delete');
     }
   };
 

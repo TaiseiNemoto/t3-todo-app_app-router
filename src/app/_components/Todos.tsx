@@ -3,6 +3,7 @@
 import useSWR from 'swr';
 import { Todo, zTodos } from '../api/todo/type';
 import TodoComponent from './Todo';
+import { ProgressBar } from './ProgressBar';
 
 type Props = {
   initialState: Todo[];
@@ -31,6 +32,7 @@ export default function Todos({ initialState }: Props) {
           </section>
         );
       })}
+      <ProgressBar todos={data} />
     </>
   );
 }

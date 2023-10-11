@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { createInput } from '../../types';
+import { useRouter } from 'next/navigation';
 
 export function CreateTodo() {
   const [newTodo, setNewTodo] = useState('');
+  const router = useRouter();
 
   const createTodo = async () => {
     const res = await fetch(`/api/todo`, {
@@ -17,6 +19,7 @@ export function CreateTodo() {
     });
     if (res.ok) {
       setNewTodo('');
+      router.refresh();
     } else {
       alert('Note failed to create');
     }
