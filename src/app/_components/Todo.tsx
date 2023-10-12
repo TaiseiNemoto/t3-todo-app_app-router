@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 
 import type { Todo } from '../api/todo/type';
 import type { TodoParams } from '../api/todo/type';
+import { useRouter } from 'next/navigation';
 
 type TodoProps = {
   todo: Todo;
@@ -10,14 +11,14 @@ type TodoProps = {
 
 export default function Todo({ todo }: TodoProps) {
   const { id, text, isCompleted } = todo;
+  const router = useRouter();
 
   const [currentTodo, setCurrentTodo] = useState(text);
 
   const toggleTodoStatus = async (checked: boolean) => {
-    console.log(checked);
-
     const res = await putTodo({ id, isCompleted: checked, text });
     if (res.ok) {
+      router.refresh();
     } else {
       toast.error('Todo failed to Update');
     }
@@ -50,6 +51,7 @@ export default function Todo({ todo }: TodoProps) {
       },
     });
     if (res.ok) {
+      router.refresh();
     } else {
     }
   };

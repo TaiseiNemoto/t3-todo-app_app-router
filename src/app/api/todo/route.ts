@@ -25,11 +25,9 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   const data = await req.json();
-  console.log(data);
 
   const parcedData = updateInput.parse(data);
   const { id, text, isCompleted } = parcedData;
-  console.log(id, text, isCompleted);
 
   await prisma.todo.update({
     where: {

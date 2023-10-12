@@ -5,7 +5,6 @@ import ButtonAuth from '../_components/ButtonAuth';
 
 export default async function Page() {
   const providers = await getProviders();
-  console.log(providers);
 
   return (
     <>
